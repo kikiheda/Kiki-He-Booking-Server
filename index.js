@@ -14,8 +14,8 @@ app.use(cors()); // Enable CORS
 app.use(express.json()); // Parse JSON request bodies
 
 // Define routes
-app.use("/api/users", usersRoute);
-app.use("/api/reservations", reservationsRoute);
+app.use("/users", usersRoute);
+app.use("/reservations", reservationsRoute);
 // app.use("/", generalRoute);
 
 // Error handling middleware (optional)
