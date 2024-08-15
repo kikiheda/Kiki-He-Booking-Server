@@ -10,7 +10,7 @@ export const up = async function (knex) {
       .references("id")
       .inTable("users")
       .onDelete("CASCADE");
-    table.string("name").notNullable(); // New name column
+    table.string("name").notNullable();
     table.date("date").notNullable();
     table.time("time").notNullable();
     table.integer("party_size").notNullable();
