@@ -1,14 +1,34 @@
 import express from "express";
-const app = express();
 import "dotenv/config";
 import cors from "cors";
 
+// Import routes
+import usersRoute from "./routes/users.js";
+import reservationsRoute from "./routes/reservations.js";
+// import generalRoute from "./routes/general.js";
 
+const app = express();
+
+// Middleware
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Parse JSON request bodies
+
+// Define routes
+app.use("/api/users", usersRoute);
+app.use("/api/reservations", reservationsRoute);
+// app.use("/", generalRoute);
+
+// Error handling middleware (optional)
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    error: {
+      message: err.message,
+    },
+  });
+});
+
+// Start the server
 const PORT = process.env.port || 8080;
-
-app.use(cors());
-app.use(express.json());
-
 app.listen(PORT, () => {
-  console.log(`Listening on PORT ${PORT}.`);
+  console.log(`Server is running on port ${PORT}`);
 });

@@ -14,6 +14,8 @@ export const seed = async function (knex) {
       time: "18:00:00",
       party_size: 4,
       status: "active",
+      created_at: knex.fn.now(), // Timestamp at creation
+      updated_at: knex.fn.now(), // Initially the same as created_at
     },
     {
       id: 2,
@@ -22,7 +24,9 @@ export const seed = async function (knex) {
       date: "2024-08-21",
       time: "19:30:00",
       party_size: 2,
-      status: "active",
+      status: "cancelled",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 3,
@@ -32,15 +36,19 @@ export const seed = async function (knex) {
       time: "20:00:00",
       party_size: 3,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 4,
       user_id: 4,
       name: "David Williams",
       date: "2024-08-23",
-      time: "17:00:00",
+      time: "17:15:00",
       party_size: 6,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 5,
@@ -49,7 +57,9 @@ export const seed = async function (knex) {
       date: "2024-08-24",
       time: "18:45:00",
       party_size: 5,
-      status: "active",
+      status: "cancelled",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 6,
@@ -59,6 +69,8 @@ export const seed = async function (knex) {
       time: "19:00:00",
       party_size: 2,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 7,
@@ -68,6 +80,8 @@ export const seed = async function (knex) {
       time: "20:15:00",
       party_size: 4,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 8,
@@ -77,6 +91,8 @@ export const seed = async function (knex) {
       time: "21:00:00",
       party_size: 3,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 9,
@@ -86,6 +102,8 @@ export const seed = async function (knex) {
       time: "18:30:00",
       party_size: 2,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
     {
       id: 10,
@@ -95,6 +113,31 @@ export const seed = async function (knex) {
       time: "19:45:00",
       party_size: 6,
       status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
+    },
+    
+    {
+      id: 11,
+      user_id: 1,
+      name: "Alice Smith",
+      date: "2024-08-20",
+      time: "18:15:00",
+      party_size: 4,
+      status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
+    },
+    {
+      id: 12,
+      user_id: 1,
+      name: "Alice Smith",
+      date: "2024-08-20",
+      time: "18:30:00",
+      party_size: 4,
+      status: "active",
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     },
   ]);
 };
