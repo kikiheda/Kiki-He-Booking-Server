@@ -1,11 +1,12 @@
-// seeds/02_reservations.js
+function calculateTablesRequired(partySize) {
+  return Math.ceil(partySize / 2);
+}
 
 export const seed = async function (knex) {
   // Deletes ALL existing entries
   await knex("reservations").del();
 
-  // Inserts seed entries
-  await knex("reservations").insert([
+  const reservations = [
     {
       id: 1,
       user_id: 1,
@@ -13,7 +14,7 @@ export const seed = async function (knex) {
       date: "2024-08-20",
       time: "18:00:00",
       party_size: 4,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(), // Timestamp at creation
       updated_at: knex.fn.now(), // Initially the same as created_at
     },
@@ -24,7 +25,7 @@ export const seed = async function (knex) {
       date: "2024-08-21",
       time: "19:30:00",
       party_size: 2,
-      status: "cancelled",
+      status: "canceled",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -35,7 +36,7 @@ export const seed = async function (knex) {
       date: "2024-08-22",
       time: "20:00:00",
       party_size: 3,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -46,7 +47,7 @@ export const seed = async function (knex) {
       date: "2024-08-23",
       time: "17:15:00",
       party_size: 6,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -57,7 +58,7 @@ export const seed = async function (knex) {
       date: "2024-08-24",
       time: "18:45:00",
       party_size: 5,
-      status: "cancelled",
+      status: "canceled",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -68,7 +69,7 @@ export const seed = async function (knex) {
       date: "2024-08-25",
       time: "19:00:00",
       party_size: 2,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -79,7 +80,7 @@ export const seed = async function (knex) {
       date: "2024-08-26",
       time: "20:15:00",
       party_size: 4,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -90,7 +91,7 @@ export const seed = async function (knex) {
       date: "2024-08-27",
       time: "21:00:00",
       party_size: 3,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -101,7 +102,7 @@ export const seed = async function (knex) {
       date: "2024-08-28",
       time: "18:30:00",
       party_size: 2,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -112,11 +113,10 @@ export const seed = async function (knex) {
       date: "2024-08-29",
       time: "19:45:00",
       party_size: 6,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
-    
     {
       id: 11,
       user_id: 1,
@@ -124,7 +124,7 @@ export const seed = async function (knex) {
       date: "2024-08-20",
       time: "18:15:00",
       party_size: 4,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
@@ -135,9 +135,19 @@ export const seed = async function (knex) {
       date: "2024-08-20",
       time: "18:30:00",
       party_size: 4,
-      status: "active",
+      status: "confirmed",
       created_at: knex.fn.now(),
       updated_at: knex.fn.now(),
     },
-  ]);
+  ];
+
+  // Calculate tables_required for each reservation dynamically
+  reservations.forEach((reservation) => {
+    reservation.tables_required = calculateTablesRequired(
+      reservation.party_size
+    );
+  });
+
+  // Inserts seed entries with dynamically calculated tables_required
+  await knex("reservations").insert(reservations);
 };
