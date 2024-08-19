@@ -1,7 +1,8 @@
-import knex from "../knexfile.js";
-
 // Get all reservations for a user
 // reservations.controller.js
+import initKnex from "knex";
+import configuration from "../knexfile.js";
+const knex = initKnex(configuration);
 
 export const getReservations = async (req, res) => {
   try {
@@ -23,16 +24,33 @@ export const getReservations = async (req, res) => {
 };
 
 
-// Create a new reservation
 export const createReservation = async (req, res) => {
+  const { user_id, name, date, time, party_size, status } = req.body;
+
   try {
-    const { user_id, name, date, time, party_size } = req.body;
-    const [reservation] = await knex("reservations")
-      .insert({ user_id, name, date, time, party_size })
-      .returning("*");
-    res.status(201).json(reservation);
+    // Insert the new reservation into the database
+    const [insertedId] = await knex('reservations').insert({
+      user_id,
+      name,
+      date,
+      time,
+      party_size,
+      status,
+    });
+
+    // Fetch the newly created reservation to return as a response
+    const newReservation = await knex('reservations').where('id', insertedId).first();
+
+    // Return the new reservation as a JSON response
+    res.status(201).json({
+      message: 'Reservation created successfully',
+      reservation: newReservation,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error creating reservation:', error);
+    res.status(500).json({
+      error: 'Failed to create reservation',
+    });
   }
 };
 
@@ -55,9 +73,28 @@ export const updateReservation = async (req, res) => {
 export const deleteReservation = async (req, res) => {
   try {
     const { id } = req.params;
-    await knex("reservations").where({ id }).del();
-    res.status(204).send();
+
+    // Start a transaction
+    await knex.transaction(async (trx) => {
+      // Get the reservation details first
+      const reservation = await trx("reservations").where({ id }).first();
+
+      if (!reservation) {
+        return res.status(404).json({ error: "Reservation not found" });
+      }
+
+      // Delete the reservation
+      await trx("reservations").where({ id }).del();
+
+      // Update availability (increment available seats)
+      await trx("availability")
+        .where({ date: reservation.date, time: reservation.time })
+        .increment("available_seats", reservation.party_size);
+
+      res.status(204).send();
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
