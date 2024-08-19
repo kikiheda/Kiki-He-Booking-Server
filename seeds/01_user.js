@@ -1,70 +1,58 @@
 // seeds/01_users.js
 
-export const seed = async function (knex) {
+export const seed = async (knex) => {
   // Deletes ALL existing entries
   await knex("users").del();
 
   // Inserts seed entries
-  await knex("users").insert([
+  const users = [
+    { name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890" },
     {
-      id: 1,
-      name: "Alice Smith",
-      email: "alice@gmail.com",
-      phone: "123-456-7890",
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      phone: "098-765-4321",
     },
     {
-      id: 2,
-      name: "Bob Johnson",
-      email: "bob@yahoo.com",
-      phone: "234-567-8901",
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      phone: "555-555-5555",
     },
     {
-      id: 3,
-      name: "Charlie Brown",
-      email: "charlie@hotmail.com",
-      phone: "345-678-9012",
+      name: "Bob Brown",
+      email: "bob.brown@example.com",
+      phone: "111-222-3333",
     },
     {
-      id: 4,
-      name: "David Williams",
-      email: "david@outlook.com",
-      phone: "456-789-0123",
+      name: "Carol White",
+      email: "carol.white@example.com",
+      phone: "444-555-6666",
     },
     {
-      id: 5,
-      name: "Eva Davis",
-      email: "eva@icloud.com",
-      phone: "567-890-1234",
+      name: "Dave Black",
+      email: "dave.black@example.com",
+      phone: "777-888-9999",
     },
     {
-      id: 6,
-      name: "Frank Miller",
-      email: "frank@protonmail.com",
-      phone: "678-901-2345",
+      name: "Eve Green",
+      email: "eve.green@example.com",
+      phone: "222-333-4444",
     },
     {
-      id: 7,
-      name: "Grace Lee",
-      email: "grace@live.com",
-      phone: "789-012-3456",
+      name: "Frank Blue",
+      email: "frank.blue@example.com",
+      phone: "333-444-5555",
     },
     {
-      id: 8,
-      name: "Henry Clark",
-      email: "henry@zoho.com",
-      phone: "890-123-4567",
+      name: "Grace Red",
+      email: "grace.red@example.com",
+      phone: "666-777-8888",
     },
     {
-      id: 9,
-      name: "Isabel Martinez",
-      email: "isabel@mail.com",
-      phone: "901-234-5678",
+      name: "Hank Yellow",
+      email: "hank.yellow@example.com",
+      phone: "999-000-1111",
     },
-    {
-      id: 10,
-      name: "Jack Wilson",
-      email: "jack@gmx.com",
-      phone: "012-345-6789",
-    },
-  ]);
+  ];
+
+  await knex("users").insert(users);
 };
