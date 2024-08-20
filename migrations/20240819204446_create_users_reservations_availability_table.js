@@ -4,6 +4,7 @@ export const up = async (knex) => {
   // Create Users Table
   await knex.schema.createTable("users", (table) => {
     table.increments("id").primary();
+    table.string("userId").unique().notNullable();
     table.string("name").notNullable();
     table.string("email").unique().notNullable();
     table.string("phone").notNullable();
@@ -18,11 +19,7 @@ export const up = async (knex) => {
   await knex.schema.createTable("reservations", (table) => {
     table.increments("id").primary();
     table.integer("user_id").unsigned().notNullable();
-    table
-      .foreign("user_id")
-      .references("id")
-      .inTable("users")
-      .onDelete("CASCADE");
+    table.integer("reservationId").unsigned().notNullable();
     table.string("name").notNullable();
     table.date("date").notNullable();
     table.string("time").notNullable(); // Store time as a string
@@ -50,6 +47,28 @@ export const up = async (knex) => {
       .defaultTo(knex.raw("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"))
       .notNullable();
   });
+
+  // generate user_id
+  const users = await knex("users").select("id");
+
+  for (const user of users) {
+    const userId = Math.floor(100 + Math.random() * 900).toString();
+    await knex("users")
+      .where({ id: user.id }) // Primary key
+      .update({ userId });
+  }
+
+  // Generate reservation_id
+  const reservations = await knex("reservations").select("id");
+
+  for (const reservation of reservations) {
+    const reservationId = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+    await knex("reservations")
+      .where({ id: reservation.id })
+      .update({ reservationId });
+  }
 };
 
 export const down = async (knex) => {
