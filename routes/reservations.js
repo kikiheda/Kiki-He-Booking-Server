@@ -1,23 +1,19 @@
 import express from "express";
-import {
-  getReservations,
-  createReservation,
-  updateReservation,
-  deleteReservation,
-} from "../controllers/reservationController.js";
-
+import * as reservationController from "../controllers/reservationController.js";
 const router = express.Router();
 
-// Get all reservations for a user
-router.get("/", getReservations);
 
 // Create a new reservation
-router.post("/", createReservation);
+router.route("/create")
+.post(reservationController.createReservation);
 
-// Update a reservation
-router.put("/:id", updateReservation);
 
-// Cancel a reservation
-router.delete("/:id", deleteReservation);
+// Modification
+router.route("/:id")
+.get(reservationController.searchReservation) // find reservation
+.put(reservationController.updateReservation)
+.delete(reservationController.deleteReservation)
+
+
 
 export default router;
